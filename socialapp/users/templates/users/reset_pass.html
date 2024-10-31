@@ -1,0 +1,8 @@
+{% extends "users/base.html" %}
+{% block body %}
+<form action="" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Change</button>
+</form>
+{% endblock %}
