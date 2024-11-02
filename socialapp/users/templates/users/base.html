@@ -4,16 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'users/styles.css' %}">
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>  
     <nav>
+        <div>
+            <div>
+                <a href="">
+                    <img class="h-8 w-8" src="{% static "users/images/logo.png" %}" alt="">
+                    <span>Photo App</span>
+                </a>
+            </div>
+        </div>
+    </nav>
         {% if request.user.is_authenticated %}
         <a href="{% url "logout" %}">Logout</a>
         {% else %}
         <a href="{% url "login" %}">Login</a>
         {% endif %}
-    </nav>
     {% block container %}
     {% endblock %}
 </body>
