@@ -1,6 +1,47 @@
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">Login</button>
-    <p>Forgot password ? <a href="{% url "password_reset" %}">Click Here</a></p>
-</form>
+{% extends "users/base.html" %}
+
+{% block container %}
+<div class="flex justify-center items-center min-h-[calc(100vh-120px)] bg-gray-100">
+    <div class="bg-white shadow-lg rounded-lg w-full max-w-md px-8 pt-6 pb-8 mb-4">
+        <h1 class="text-3xl font-semibold text-center text-gray-800 mb-6">Login</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Username</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2a5 5 0 110 10 5 5 0 010-10zM2 18a8 8 0 0116 0H2z"></path>
+                        </svg>
+                    </span>
+                    {{ form.username }}
+                </div>
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 9a2 2 0 012-2h8a2 2 0 012 2v7a2 2 0 01-2 2H6a2 2 0 01-2-2V9zm2 0v7h8V9H6zM9 6V5a3 3 0 116 0v1h-6z" clip-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                    {{ form.password }}
+                </div>
+            </div>
+            <div class="flex items-center justify-between">
+                <button type="submit" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                    Login
+                </button>
+            </div>
+            <p class="text-center text-sm text-gray-600 mt-4">
+                Forgot your password? 
+                <a href="{% url 'password_reset' %}" class="text-indigo-500 hover:text-indigo-700 font-semibold">Click Here</a>
+            </p>
+            <p class="text-center text-sm text-gray-600 mt-2">
+                Don't have an account? 
+                <a href="{% url 'register' %}" class="text-indigo-500 hover:text-indigo-700 font-semibold">Register Here</a>
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,3 +1,10 @@
+/* tw.css */
+
+/* Include Tailwind's base styles */
 @tailwind base;
+
+/* Include Tailwind's component styles */
 @tailwind components;
+
+/* Include Tailwind's utility styles */
 @tailwind utilities;

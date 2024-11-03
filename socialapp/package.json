@@ -1,16 +1,9 @@
 {
-  "name": "socialapp",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tailwindcss -i users/static/users/tw.css -o users/static/users/styles.css"
+  "devDependencies": {
+    "tailwindcss": "^3.4.14"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "tailwindcss": "^2.2.16"
+  "scripts": {
+    "build": "tailwindcss -i ./users/static/users/tw.css -o ./users/static/users/styles.css",
+    "watch": "tailwindcss -i ./users/static/users/tw.css -o ./users/static/users/styles.css --watch"
   }
 }
