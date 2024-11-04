@@ -1,10 +1,51 @@
 {% extends "users/base.html" %}
+
 {% block container %}
-<h2>Edit profile</h2>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{user_form.as_p}}
-    {{profile_form.as_p}}
-    <button type="submit">Edit</button>
-</form>
+<div class="flex justify-center items-center min-h-[calc(100vh-120px)] bg-gray-100">
+    <div class="bg-white shadow-lg rounded-lg w-full max-w-md px-8 pt-6 pb-8 mb-4">
+        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Edit Profile</h2>
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            
+
+            
+            <!-- Username Field -->
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="first_name">First Name</label>
+                <input type="text" name="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" value="{{ user_form.username.value|default:'' }}">
+            </div>
+            
+            <!-- First Name Field -->
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="first_name">First Name</label>
+                <input type="text" name="first_name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" value="{{ user_form.first_name.value|default:'' }}">
+            </div>
+
+            <!-- Last Name Field -->
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="last_name">Last Name</label>
+                <input type="text" name="last_name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" value="{{ user_form.last_name.value|default:'' }}">
+            </div>
+
+            <!-- Email Field -->
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
+                <input type="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" value="{{ user_form.email.value|default:'' }}">
+            </div>
+
+            <!-- Profile Photo Field -->
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="photo">Profile Photo</label>
+                <input type="file" name="photo" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex items-center justify-center">
+                <button type="submit" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
