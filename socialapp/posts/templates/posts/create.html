@@ -1,8 +1,43 @@
 {% extends "users/base.html" %}
+
 {% block container %}
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="font-semibold text-lg">Post</button>
-</form>
+<div class="flex justify-center items-center min-h-[calc(100vh-120px)] bg-gray-100">
+    <div class="bg-white shadow-lg rounded-lg w-full max-w-md px-8 pt-6 pb-8 mb-4">
+        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Create Post</h2>
+        
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            
+            <!-- Title Field -->
+            <div>
+                <label for="id_title" class="block text-gray-700 text-sm font-bold mb-2">Title</label>
+                <input type="text" name="title" id="id_title" 
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" 
+                       placeholder="Enter post title" required>
+            </div>
+
+            <!-- Image Upload Field -->
+            <div>
+                <label for="id_image" class="block text-gray-700 text-sm font-bold mb-2">Upload Image</label>
+                <input type="file" name="image" id="id_image" 
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            </div>
+
+            <!-- Caption Field -->
+            <div>
+                <label for="id_caption" class="block text-gray-700 text-sm font-bold mb-2">Caption</label>
+                <textarea name="caption" id="id_caption" rows="4" 
+                          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" 
+                          placeholder="Write a caption..."></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex items-center justify-center">
+                <button type="submit" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                    Post
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
