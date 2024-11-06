@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import PostCreateForm
 from django.contrib.auth.decorators import login_required
@@ -28,8 +29,19 @@ def feed(request):
 def like_post(request):
     if request.method == "POST":
         post_id = request.POST.get('post_id')
-        post = get_object_or_404(Post, id = post_id)
-        if post.liked_by.filter(id=request.uer.id).exists():
+        post = get_object_or_404(Post, id=post_id)
+        
+        # Check if the user has already liked the post
+        if post.liked_by.filter(id=request.user.id).exists():
+            # If the user already liked the post, remove the like
             post.liked_by.remove(request.user)
+            message = "Unliked"
         else:
-            post.liked_by.filter(request.user)
+            # If the user hasn't liked the post, add the like
+            post.liked_by.add(request.user)
+            message = "Liked"
+        
+        # Optional: Return a JSON response for more flexibility
+        return HttpResponse(message)
+    else:
+        return HttpResponse("Invalid request method.", status=400)

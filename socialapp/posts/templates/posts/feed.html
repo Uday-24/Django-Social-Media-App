@@ -2,22 +2,31 @@
 {% load static %}
 {% block container %}
 <div class="flex mt-5 p-10 justify-center">
-    <h2 class="text-3xl font-normal mb-2 text-gray-500">My Posts</h2>
+    <h2 class="text-3xl font-normal mb-2 text-gray-500">All Posts</h2>
 </div>
 <div class="grid mx-80 p-10 grid-cols-1">
     {% for post in posts %}
     <!-- Cards start -->
     <a href="">
         <div class="rounded overflow-hidden w-[470px] h-[470-px] bg-white shadow-lg">
-        <div class="user-container flex mx-5 my-5">
-            <img src="{{post.user.profile.photo.url}}" alt="" class="w-10 h-10 rounded-full">
-            <div class="mx-2 my-2 font-bold"><span class="text-indigo-500">{{post.user}}</span></div>
-        </div>
+            <div class="user-container flex mx-5 my-5">
+                <img src="{{post.user.profile.photo.url}}" alt="" class="w-10 h-10 rounded-full">
+                <div class="mx-2 my-2 font-bold"><span class="text-indigo-500">{{post.user}}</span></div>
+            </div>
             <img src="{{post.image.url}}" alt="">
         </div>
+    </a>
         <div class="px-6 py-4">
             <div class="icon-container flex gap-3">
-                <img src="{% static "users/images/like.png" %}" alt="" class="w-7 h-7">
+                <button id="{{post.id}}" class="btn-like">
+                    {% if logged_user in post.liked_by.all %}
+                    <img src="{% static "users/images/liked.png" %}" alt="" class="w-7 h-7">
+                    Liked
+                    {% else %}
+                    <img src="{% static "users/images/like.png" %}" alt="" class="w-7 h-7">
+                    Not Liked
+                    {% endif %}
+                </button>
                 <img src="{% static "users/images/comment.png" %}" alt="" class="w-7 h-7">
                 <img src="{% static "users/images/share.png" %}" alt="" class="w-7 h-7">
             </div>
@@ -26,9 +35,37 @@
             <div class="font-bold text-2xl mb-2">{{post.title}}</div>
             <p class="text-gray-700 text-base">{{post.caption}}</p>
         </div>
-    </a>
     <!-- Cards End -->
 
 {% endfor %}
 </div>
+
+<script>
+    $(document).ready(function(){
+        // CSRF token setup for AJAX
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": "{{ csrf_token }}" }
+        });
+
+        $(document).on('click', '.btn-like', function(){
+            var post_id = $(this).attr('id');  // Use .attr() to get the element's ID
+            $.ajax({
+                method: 'POST',
+                url: '/posts/like/',
+                data: {
+                    'post_id': post_id,
+                },
+                success: function(response) {
+                    // Optionally handle a successful like, e.g., update like count
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    // Optionally handle errors
+                    console.error("Error liking post:", error);
+                }
+            });
+        });
+    });
+</script>
+
 {% endblock %}
