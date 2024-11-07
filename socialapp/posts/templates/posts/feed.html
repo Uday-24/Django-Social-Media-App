@@ -1,5 +1,7 @@
 {% extends "users/base.html" %}
+{% load mathfilters %}
 {% load static %}
+
 {% block container %}
 <div class="flex mt-5 p-10 justify-center">
     <h2 class="text-3xl font-normal mb-2 text-gray-500">All Posts</h2>
@@ -7,36 +9,67 @@
 <div class="grid mx-80 p-10 grid-cols-1">
     {% for post in posts %}
     <!-- Cards start -->
-    <a href="">
-        <div class="rounded overflow-hidden w-[470px] h-[470-px] bg-white shadow-lg">
-            <div class="user-container flex mx-5 my-5">
-                <img src="{{post.user.profile.photo.url}}" alt="" class="w-10 h-10 rounded-full">
-                <div class="mx-2 my-2 font-bold"><span class="text-indigo-500">{{post.user}}</span></div>
+        <a href="">
+            <div class="rounded overflow-hidden w-[470px] h-[470-px] bg-white shadow-lg">
+                <div class="user-container flex mx-5 my-5">
+                    <img src="{{post.user.profile.photo.url}}" alt="" class="w-10 h-10 rounded-full">
+                    <div class="mx-2 my-2 font-bold"><span class="text-indigo-500">{{post.user}}</span></div>
+                </div>
+                <img src="{{post.image.url}}" alt="">
             </div>
-            <img src="{{post.image.url}}" alt="">
-        </div>
-    </a>
+        </a>
         <div class="px-6 py-4">
             <div class="icon-container flex gap-3">
                 <button id="{{post.id}}" class="btn-like">
                     {% if logged_user in post.liked_by.all %}
                     <img src="{% static "users/images/liked.png" %}" alt="" class="w-7 h-7">
-                    Liked
                     {% else %}
                     <img src="{% static "users/images/like.png" %}" alt="" class="w-7 h-7">
-                    Not Liked
                     {% endif %}
                 </button>
                 <img src="{% static "users/images/comment.png" %}" alt="" class="w-7 h-7">
                 <img src="{% static "users/images/share.png" %}" alt="" class="w-7 h-7">
             </div>
         </div>
+        <div>
+            {% if post.liked_by.count < 1 %}
+            {% elif post.liked_by.count == 1 %}
+            {{ post.liked_by.first }} Likes this
+            {% elif post.liked_by.count > 1 %}
+            {{ post.liked_by.first }} & {{ post.liked_by.count|sub:1 }} other Like this
+            {% endif %}
+        </div>
         <div class="px-6 py-4">
             <div class="font-bold text-2xl mb-2">{{post.title}}</div>
             <p class="text-gray-700 text-base">{{post.caption}}</p>
         </div>
     <!-- Cards End -->
-
+        <div class="px-5 py-5">
+            {% for comment in post.comments.all %}
+            <strong>{{ comment.posted_by }} :</strong>
+            {{ comment.body }}
+            <br>
+            {% endfor %}
+        </div>
+        <div class="px-5 py-5">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-2">
+                    <label class="block text-gray-700 text-sm font-bold mb-1">Add comment</label>
+                </div>
+                <div class="mb-3">
+                    <textarea name="body" rows="3" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                </div>
+                <div>
+                    <input type="hidden" name="post_id" id="post_id" value="{{ post.id }}">
+                    <input type="hidden" name="posted_by" id="posted_by" value="{{ logged_user }}">
+                    <button type="submit" class="bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        Comment
+                    </button>
+                </div>
+            </form>
+        </div>
+           
 {% endfor %}
 </div>
 
@@ -64,6 +97,7 @@
                     console.error("Error liking post:", error);
                 }
             });
+            window.location.href = "http://127.0.0.1:8000/posts/feed/"
         });
     });
 </script>
